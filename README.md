@@ -1,4 +1,4 @@
-# PTTKPM-Nhom13
+# PTTKPM-Nhom1
 Xây dựng hệ thống quản lý thư viện
 
 **1. Mô tả khái quát về nội dung đề tài**
