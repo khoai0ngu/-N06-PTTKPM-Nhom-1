@@ -1,332 +1,120 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(LibraryApp());
+void main() => runApp(const MyApp());
 
-class LibraryApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DashboardScreen(),
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
     );
   }
 }
 
-class DashboardScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool passwordVisible = false; // Biến điều khiển hiển thị mật khẩu
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage('assets/avatar.png'),
-                  ),
-                  SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Bao Quach Gia",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "22010039",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo và mô tả
+              const SizedBox(height: 20),
+              Image.network(
+                'https://phenikaa-uni.edu.vn:3600/pu/vi/modules/logo-phenikaa-uni-02.png', // Thay bằng URL logo
+                height: 50,
               ),
-            ),
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextField(
+              const SizedBox(height: 10),
+              const Text(
+                "Hiện thực hóa tiềm năng",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 20),
+
+              // Tiêu đề
+              const Text(
+                "Đăng nhập PU-LIC",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Tên đăng nhập
+              TextField(
                 decoration: InputDecoration(
-                  hintText: "Tìm kiếm...",
-                  prefixIcon: Icon(Icons.search),
+                  labelText: "Tên đăng nhập",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-            // News Section
-            _buildSectionTitle("Tin tức", () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NewsListScreen()),
-              );
-            }),
-            _buildHorizontalList([
-              "assets/news1.png",
-              "assets/news2.png",
-              "assets/news3.png",
-            ]),
-            SizedBox(height: 16),
-            // Featured Documents Section
-            _buildSectionTitle("Tài liệu nổi bật", () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FeaturedDocumentsScreen()),
-              );
-            }),
-            _buildHorizontalList([
-              "assets/doc1.png",
-              "assets/doc2.png",
-              "assets/doc3.png",
-            ]),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Public"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.library_books), label: "Thư viện số"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.book), label: "Thư viện điện tử"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Cá nhân"),
-        ],
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 0,
-        onTap: (index) {
-          // Handle navigation
-        },
-      ),
-    );
-  }
+              const SizedBox(height: 16),
 
-  Widget _buildSectionTitle(String title, VoidCallback onViewAll) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          GestureDetector(
-            onTap: onViewAll,
-            child: Text(
-              "Xem thêm",
-              style: TextStyle(color: Colors.blue, fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHorizontalList(List<String> imagePaths) {
-    return SizedBox(
-      height: 150,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: imagePaths.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: Image.asset(
-              imagePaths[index],
-              fit: BoxFit.cover,
-              width: 120,
-              height: 150,
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class NewsListScreen extends StatelessWidget {
-  final List<Map<String, String>> newsData = [
-    {
-      "image": "assets/news1.png",
-      "title": "CHÚC MỪNG NĂM MỚI 2025",
-      "description": "Nhân dịp chào đón năm mới 2025...",
-      "date": "31/12/2024"
-    },
-    {
-      "image": "assets/news2.png",
-      "title": "TRIỂN KHAI DỊCH VỤ MƯỢN/TRẢ TÀI LIỆU TỰ ĐỘNG",
-      "description": "Trung tâm Thông tin Thư viện...",
-      "date": "10/10/2024"
-    },
-    {
-      "image": "assets/news3.png",
-      "title": "[THƯ VIỆN]__Thông báo lịch nghỉ lễ Quốc Khánh",
-      "description": "Trung tâm Thông tin Thư viện...",
-      "date": "30/8/2024"
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Danh sách tin tức"),
-      ),
-      body: ListView.builder(
-        itemCount: newsData.length,
-        itemBuilder: (context, index) {
-          final news = newsData[index];
-          return ListTile(
-            leading: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: AssetImage(news["image"]!),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            title: Text(news["title"]!),
-            subtitle: Text("Ngày đăng: ${news["date"]!}"),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class FeaturedDocumentsScreen extends StatelessWidget {
-  final List<Map<String, String>> documents = [
-    {
-      "image": "assets/doc1.png",
-      "title": "Tài liệu nổi bật 1",
-      "description": "Mô tả tài liệu 1",
-    },
-    {
-      "image": "assets/doc2.png",
-      "title": "Tài liệu nổi bật 2",
-      "description": "Mô tả tài liệu 2",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-    {
-      "image": "assets/doc3.png",
-      "title": "Tài liệu nổi bật 3",
-      "description": "Mô tả tài liệu 3",
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Danh sách tài liệu nổi bật"),
-      ),
-      body: ListView.builder(
-        itemCount: documents.length,
-        itemBuilder: (context, index) {
-          final doc = documents[index];
-          return Card(
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ListTile(
-              leading: Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: AssetImage(doc["image"]!),
-                    fit: BoxFit.cover,
+              // Mật khẩu với chức năng ẩn/hiện
+              TextField(
+                obscureText:
+                    !passwordVisible, // Dựa trên passwordVisible để ẩn/hiện mật khẩu
+                decoration: InputDecoration(
+                  labelText: "Mật khẩu",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible =
+                            !passwordVisible; // Chuyển đổi trạng thái mật khẩu
+                      });
+                    },
                   ),
                 ),
               ),
-              title: Text(doc["title"]!),
-              subtitle: Text(doc["description"]!),
-            ),
-          );
-        },
+              const SizedBox(height: 16),
+
+              // Nút đăng nhập
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    "Đăng nhập",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
-
